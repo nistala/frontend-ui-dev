@@ -1,42 +1,10 @@
+import React from "react"
 import { ArrowRight, Users, BookOpen, Calendar, Award, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 
-const features = [
-  {
-    icon: BookOpen,
-    title: "Government Exams",
-    description: "Comprehensive exam preparation with AI-powered practice tests and personalized study plans.",
-    href: "/exams",
-  },
-  {
-    icon: Users,
-    title: "Job Opportunities",
-    description: "Access thousands of government and private sector job openings with smart matching.",
-    href: "/jobs",
-  },
-  {
-    icon: Calendar,
-    title: "Job Fairs",
-    description: "Connect with top employers at virtual and physical job fairs nationwide.",
-    href: "/job-fairs",
-  },
-  {
-    icon: Award,
-    title: "Merit Lists",
-    description: "Track your ranking and results across all competitive examinations.",
-    href: "/results",
-  },
-]
-
-const stats = [
-  { label: "Active Job Seekers", value: "2.5M+" },
-  { label: "Job Openings", value: "50K+" },
-  { label: "Government Exams", value: "500+" },
-  { label: "Success Rate", value: "85%" },
-]
 
 const recentJobs = [
   {
@@ -44,7 +12,7 @@ const recentJobs = [
     company: "Union Public Service Commission",
     location: "Pan India",
     type: "Government",
-    salary: "₹56,100 - ₹2,50,000 per month",
+    salary: "₹56,100 - ₹2,50,000 /mon",
     deadline: "2025-02-15",
   },
   {
@@ -52,7 +20,7 @@ const recentJobs = [
     company: "Staff Selection Commission",
     location: "Pan India",
     type: "Government",
-    salary: "₹35,400 - ₹1,12,400 per month",
+    salary: "₹35,400 - ₹1,12,400 /mon",
     deadline: "2025-01-31",
   },
   {
@@ -60,7 +28,7 @@ const recentJobs = [
     company: "Institute of Banking Personnel Selection",
     location: "Pan India",
     type: "Government",
-    salary: "₹52,000 - ₹55,000 per month",
+    salary: "₹52,000 - ₹55,000 /mon",
     deadline: "2025-08-10",
   },
   {
@@ -68,7 +36,7 @@ const recentJobs = [
     company: "Indian Railways",
     location: "Pan India",
     type: "Government",
-    salary: "₹19,900 - ₹35,400 per month",
+    salary: "₹19,900 - ₹35,400 /mon",
     deadline: "2025-09-30",
   },
   {
@@ -76,7 +44,7 @@ const recentJobs = [
     company: "Indian Space Research Organisation",
     location: "Bengaluru, Karnataka",
     type: "Government",
-    salary: "₹56,100 per month",
+    salary: "₹56,100 /mon",
     deadline: "2025-04-15",
   },
   {
@@ -84,7 +52,7 @@ const recentJobs = [
     company: "State Bank of India",
     location: "Pan India",
     type: "Government",
-    salary: "₹41,960 per month",
+    salary: "₹41,960 /mon",
     deadline: "2025-07-20",
   },
   {
@@ -92,7 +60,7 @@ const recentJobs = [
     company: "Life Insurance Corporation of India",
     location: "Pan India",
     type: "Government",
-    salary: "₹53,600 per month",
+    salary: "₹53,600 /mon",
     deadline: "2025-05-30",
   },
 ]
@@ -119,6 +87,12 @@ const upcomingExams = [
 ]
 
 export default function HomePage() {
+    const [currentPage, setCurrentPage] = React.useState(1)
+  const jobsPerPage = 3 // Cards per page
+
+  const totalPages = Math.ceil(recentJobs.length / jobsPerPage)
+  const startIndex = (currentPage - 1) * jobsPerPage
+  const currentJobs = recentJobs.slice(startIndex, startIndex + jobsPerPage)
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -220,13 +194,13 @@ export default function HomePage() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex items-center text-sm text-muted-foreground">
+                  <div className="flex items-center text-sm text-ring-foreground">
                     <MapPin className="h-4 w-4 mr-1" />
                     {job.location}
                   </div>
                   <div className="flex items-center justify-between">
+                    <span className="text-sm text-ring-foreground">Due: {job.deadline}</span>
                     <span className="font-semibold text-primary">{job.salary}</span>
-                    <span className="text-sm text-muted-foreground">Due: {job.deadline}</span>
                   </div>
                   <Button className="w-full" size="sm">
                     Apply Now
@@ -234,6 +208,34 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+           <div className="flex justify-center mt-8 space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+            >
+              Previous
+            </Button>
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <Button
+                key={i}
+                variant={currentPage === i + 1 ? "default" : "outline"}
+                size="sm"
+                onClick={() => setCurrentPage(i + 1)}
+              >
+                {i + 1}
+              </Button>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+            >
+              Next
+            </Button>
           </div>
         </div>
       </section>
@@ -280,31 +282,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      {/* <section className="section-padding bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="container-custom">
-          <div className="mx-auto max-w-2xl text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Ready to start your government career?</h2>
-            <p className="text-xl mb-8 text-blue-100">
-              Join millions of job seekers who trust Unemployee for their career growth.
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" variant="secondary">
-                Create Account
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-white text-white hover:bg-white hover:text-blue-600 bg-transparent"
-              >
-                Learn More
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section> */}
     </div>
   )
 }

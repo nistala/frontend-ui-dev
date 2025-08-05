@@ -40,28 +40,60 @@ const stats = [
 
 const recentJobs = [
   {
-    title: "Software Engineer",
-    company: "Ministry of Electronics & IT",
-    location: "New Delhi",
+    title: "UPSC Civil Services Examination",
+    company: "Union Public Service Commission",
+    location: "Pan India",
     type: "Government",
-    salary: "₹8-12 LPA",
-    deadline: "2024-02-15",
+    salary: "₹56,100 - ₹2,50,000 per month",
+    deadline: "2025-02-15",
   },
   {
-    title: "Data Analyst",
+    title: "SSC Combined Graduate Level (CGL)",
+    company: "Staff Selection Commission",
+    location: "Pan India",
+    type: "Government",
+    salary: "₹35,400 - ₹1,12,400 per month",
+    deadline: "2025-01-31",
+  },
+  {
+    title: "IBPS Probationary Officer (PO)",
+    company: "Institute of Banking Personnel Selection",
+    location: "Pan India",
+    type: "Government",
+    salary: "₹52,000 - ₹55,000 per month",
+    deadline: "2025-08-10",
+  },
+  {
+    title: "Indian Railways RRB NTPC",
     company: "Indian Railways",
-    location: "Mumbai",
+    location: "Pan India",
     type: "Government",
-    salary: "₹6-10 LPA",
-    deadline: "2024-02-20",
+    salary: "₹19,900 - ₹35,400 per month",
+    deadline: "2025-09-30",
   },
   {
-    title: "Civil Engineer",
-    company: "Public Works Department",
-    location: "Bangalore",
+    title: "ISRO Scientist/Engineer",
+    company: "Indian Space Research Organisation",
+    location: "Bengaluru, Karnataka",
     type: "Government",
-    salary: "₹7-11 LPA",
-    deadline: "2024-02-25",
+    salary: "₹56,100 per month",
+    deadline: "2025-04-15",
+  },
+  {
+    title: "State Bank of India PO",
+    company: "State Bank of India",
+    location: "Pan India",
+    type: "Government",
+    salary: "₹41,960 per month",
+    deadline: "2025-07-20",
+  },
+  {
+    title: "LIC Assistant Administrative Officer (AAO)",
+    company: "Life Insurance Corporation of India",
+    location: "Pan India",
+    type: "Government",
+    salary: "₹53,600 per month",
+    deadline: "2025-05-30",
   },
 ]
 
@@ -96,7 +128,7 @@ export default function HomePage() {
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-4xl mb-2">
               Your Gateway to{" "}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Government Jobs
+                Professional Opportunities
               </span>
             </h1>
             <p className="text-xl text-muted-foreground mb-4 max-w-lg mx-auto">
@@ -184,7 +216,7 @@ export default function HomePage() {
                       <CardTitle className="text-lg mb-1">{job.title}</CardTitle>
                       <CardDescription className="font-medium text-foreground">{job.company}</CardDescription>
                     </div>
-                    <Badge variant="secondary">{job.type}</Badge>
+                    <Badge variant="secondary"  className={job.type === "Government" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"}>{job.type}</Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">

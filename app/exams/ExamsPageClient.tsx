@@ -127,7 +127,7 @@ export default function ExamsPageClient() {
       <section className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20 py-12">
         <div className="container-custom">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Government Competitive Exams</h1>
+            <h1 className="text-4xl font-bold text-foreground mb-4">Competitive Exams</h1>
             <p className="text-xl text-muted-foreground">Prepare, practice, and excel in government examinations</p>
           </div>
 

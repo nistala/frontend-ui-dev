@@ -21,8 +21,8 @@ const navigation = [
   { name: "Jobs", href: "/jobs" },
   { name: "Exams", href: "/exams" },
   { name: "Job Fairs", href: "/job-fairs" },
-  { name: "Results", href: "/results" },
-  { name: "About", href: "/about" },
+  { name: "Results", href: "/results" }
+  
 ]
 
 export function Header() {

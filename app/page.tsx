@@ -1,4 +1,4 @@
-import React ,{useState} from "react"
+import { useState } from "react";
 import { ArrowRight, Users, BookOpen, Calendar, Award, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -88,8 +88,7 @@ const upcomingExams = [
 
 export default function HomePage() {
     const [currentPage, setCurrentPage] = useState(1)
-  const jobsPerPage = 3 // Cards per page
-
+  const jobsPerPage = 3
   const totalPages = Math.ceil(recentJobs.length / jobsPerPage)
   const startIndex = (currentPage - 1) * jobsPerPage
   const currentJobs = recentJobs.slice(startIndex, startIndex + jobsPerPage)

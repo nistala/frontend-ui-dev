@@ -1,12 +1,21 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ArrowRight, Users, BookOpen, Calendar, Award, MapPin } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
-
+import { useState, useEffect } from "react";
+import {
+  ArrowRight,
+  MapPin,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const recentJobs = [
   {
@@ -65,7 +74,7 @@ const recentJobs = [
     salary: "₹53,600 /mon",
     deadline: "2025-05-30",
   },
-]
+];
 
 const upcomingExams = [
   {
@@ -86,15 +95,23 @@ const upcomingExams = [
     registrations: "950K",
     category: "Banking",
   },
-]
+];
 
 export default function HomePage() {
-    const [currentPage, setCurrentPage] = useState(1)
-  const jobsPerPage = 3 // Cards per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 3; // Cards per page
 
-  const totalPages = Math.ceil(recentJobs.length / jobsPerPage)
-  const startIndex = (currentPage - 1) * jobsPerPage
-  const currentJobs = recentJobs.slice(startIndex, startIndex + jobsPerPage)
+  const totalPages = Math.ceil(recentJobs.length / jobsPerPage);
+  const startIndex = (currentPage - 1) * jobsPerPage;
+  const currentJobs = recentJobs.slice(startIndex, startIndex + jobsPerPage);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500); // Simulate loading
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -108,7 +125,8 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="text-xl text-muted-foreground mb-4 max-w-lg mx-auto">
-             Prepare for exams, apply for jobs, and track your progress all in one place.
+              Prepare for exams, apply for jobs, and track your progress all in
+              one place.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Button size="lg" className="btn-primary" asChild>
@@ -175,8 +193,12 @@ export default function HomePage() {
         <div className="container-custom">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">Latest Job Openings</h2>
-              <p className="text-muted-foreground">Fresh opportunities from government organizations</p>
+              <h2 className="text-3xl font-bold text-foreground mb-2">
+                Latest Job Openings
+              </h2>
+              <p className="text-muted-foreground">
+                Fresh opportunities from government organizations
+              </p>
             </div>
             <Button variant="outline" asChild>
               <Link href="/jobs">View All Jobs</Link>
@@ -184,34 +206,71 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {recentJobs.map((job, index) => (
-              <Card key={index} className="dashboard-card">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg mb-1">{job.title}</CardTitle>
-                      <CardDescription className="font-medium text-foreground">{job.company}</CardDescription>
+            {loading
+              ? Array.from({ length: jobsPerPage }).map((_, index) => (
+                  <Card key={index} className="dashboard-card space-y-4 p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2">
+                        <Skeleton className="h-5 w-3/4" />
+                        <Skeleton className="h-4 w-1/2" />
+                      </div>
+                      <Skeleton className="h-6 w-16 rounded-full" />
                     </div>
-                    <Badge variant="secondary"  className={job.type === "Government" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"}>{job.type}</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center text-sm text-ring-foreground">
-                    <MapPin className="h-4 w-4 mr-1" />
-                    {job.location}
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-ring-foreground">Due: {job.deadline}</span>
-                    <span className="font-semibold text-primary">{job.salary}</span>
-                  </div>
-                  <Button className="w-full" size="sm">
-                    Apply Now
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-2/3" />
+                      <div className="flex justify-between">
+                        <Skeleton className="h-4 w-1/3" />
+                        <Skeleton className="h-4 w-1/4" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-10 w-full rounded-md" />
+                  </Card>
+                ))
+              : currentJobs.map((job, index) => (
+                  <Card key={index} className="dashboard-card">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <CardTitle className="text-lg mb-1">
+                            {job.title}
+                          </CardTitle>
+                          <CardDescription className="font-medium text-foreground">
+                            {job.company}
+                          </CardDescription>
+                        </div>
+                        <Badge
+                          variant="secondary"
+                          className={
+                            job.type === "Government"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-blue-100 text-blue-800"
+                          }
+                        >
+                          {job.type}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="flex items-center text-sm text-ring-foreground">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        {job.location}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-ring-foreground">
+                          Due: {job.deadline}
+                        </span>
+                        <span className="font-semibold text-primary">
+                          {job.salary}
+                        </span>
+                      </div>
+                      <Button className="w-full" size="sm">
+                        Apply Now
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
           </div>
-           <div className="flex justify-center mt-8 space-x-2">
+          <div className="flex justify-center mt-8 space-x-2">
             <Button
               variant="outline"
               size="sm"
@@ -247,8 +306,12 @@ export default function HomePage() {
         <div className="container-custom">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">Upcoming Exams</h2>
-              <p className="text-muted-foreground">Don't miss important examination dates</p>
+              <h2 className="text-3xl font-bold text-foreground mb-2">
+                Upcoming Exams
+              </h2>
+              <p className="text-muted-foreground">
+                Don't miss important examination dates
+              </p>
             </div>
             <Button variant="outline" asChild>
               <Link href="/exams">View All Exams</Link>
@@ -261,21 +324,33 @@ export default function HomePage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="text-lg mb-1">{exam.name}</CardTitle>
+                      <CardTitle className="text-lg mb-1">
+                        {exam.name}
+                      </CardTitle>
                       <Badge variant="outline">{exam.category}</Badge>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Exam Date:</span>
+                    <span className="text-sm text-muted-foreground">
+                      Exam Date:
+                    </span>
                     <span className="font-medium">{exam.date}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Registrations:</span>
-                    <span className="font-medium text-primary">{exam.registrations}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Registrations:
+                    </span>
+                    <span className="font-medium text-primary">
+                      {exam.registrations}
+                    </span>
                   </div>
-                  <Button className="w-full bg-primary text-primary-foreground" size="sm" variant="outline">
+                  <Button
+                    className="w-full bg-primary text-primary-foreground"
+                    size="sm"
+                    variant="outline"
+                  >
                     Register Now
                   </Button>
                 </CardContent>
@@ -285,5 +360,5 @@ export default function HomePage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
